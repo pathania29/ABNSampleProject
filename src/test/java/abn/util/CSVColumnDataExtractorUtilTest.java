@@ -1,8 +1,12 @@
 package abn.util;
 
+import abn.pojo.ClientInformationBean;
+import abn.pojo.ProductInformationBean;
+import abn.pojo.TotalTransactionCostBean;
 import org.junit.Test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class CSVColumnDataExtractorUtilTest {
 
@@ -11,16 +15,31 @@ public class CSVColumnDataExtractorUtilTest {
 
     @Test
     public void getClientInformationColumnData() {
-        assertTrue(true);
+        ClientInformationBean clientInformation = CSVColumnDataExtractorUtil.getClientInformationColumnData(testRecordData);
+        assertNotNull(clientInformation);
+        assertEquals(4,clientInformation.getClientType().length());
+        assertEquals(4,clientInformation.getClientNumber().length());
+        assertEquals(4,clientInformation.getAccountNumber().length());
+        assertEquals(4,clientInformation.getSubAccountNumber().length());
+
     }
 
     @Test
     public void getProductInformationColumnData() {
-        assertTrue(true);
+        ProductInformationBean productInformationBean = CSVColumnDataExtractorUtil.getProductInformationColumnData(testRecordData);
+        assertNotNull(productInformationBean);
+        assertEquals(2,productInformationBean.getProductGroupCode().length());
+        assertEquals(4,productInformationBean.getExchangeCode().length());
+        assertEquals(6,productInformationBean.getSymbol().length());
+        assertEquals(8,productInformationBean.getExpirationDate().length());
     }
+
 
     @Test
     public void getTotalTransactionCostColumnData() {
-        assertTrue(true);
+        TotalTransactionCostBean totalTransactionCostBean = CSVColumnDataExtractorUtil.getTotalTransactionCostColumnData(testRecordData);
+        assertNotNull(totalTransactionCostBean);
+        assertEquals(10,totalTransactionCostBean.getQuantityLong().length());
+        assertEquals(10,totalTransactionCostBean.getQuantityShort().length());
     }
 }

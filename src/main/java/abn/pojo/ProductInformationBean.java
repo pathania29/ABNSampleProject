@@ -17,6 +17,22 @@ public class ProductInformationBean {
         this.expirationDate = expirationDate;
     }
 
+    public String getExchangeCode() {
+        return exchangeCode;
+    }
+
+    public String getProductGroupCode() {
+        return productGroupCode;
+    }
+
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public String getExpirationDate() {
+        return expirationDate;
+    }
+
     @Override
     public String toString() {
         return "exchangeCode='" + exchangeCode +

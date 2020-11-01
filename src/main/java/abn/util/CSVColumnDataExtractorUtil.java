@@ -18,7 +18,7 @@ public class CSVColumnDataExtractorUtil {
      * record = record.replaceAll("\\s","");
      * @param record This represents single transaction record data
      */
-    public static String getClientInformationColumnData(String record) {
+    public static ClientInformationBean getClientInformationColumnData(String record) {
         StringBuilder builder = new StringBuilder(record);
         String clientType = builder.substring(3, 7);
         String clientNumber = builder.substring(7, 11);
@@ -26,7 +26,7 @@ public class CSVColumnDataExtractorUtil {
         String subAccountNumber = builder.substring(15, 19);
         ClientInformationBean clientInformation = new ClientInformationBean(clientType,
                 clientNumber, accountNumber, subAccountNumber);
-        return clientInformation.toString();
+        return clientInformation;
     }
 
     /**
@@ -40,15 +40,15 @@ public class CSVColumnDataExtractorUtil {
      *
      * @param record This represents single transaction record data
      */
-    public static String getProductInformationColumnData(String record) {
+    public static ProductInformationBean getProductInformationColumnData(String record) {
         StringBuilder builder = new StringBuilder(record);
-        String productGroupCode = builder.substring(26, 28);
-        String exchangeCode = builder.substring(28, 32);
-        String symbol = builder.substring(32, 38);
-        String expirationDate = builder.substring(38, 46);
+        String productGroupCode = builder.substring(25, 27);
+        String exchangeCode = builder.substring(27, 31);
+        String symbol = builder.substring(31, 37);
+        String expirationDate = builder.substring(37, 45);
         ProductInformationBean productInformationBean = new ProductInformationBean(exchangeCode,
                 productGroupCode, symbol, expirationDate);
-        return productInformationBean.toString();
+        return productInformationBean;
     }
 
     /**
@@ -60,16 +60,11 @@ public class CSVColumnDataExtractorUtil {
      *
      * @param record This represents single transaction record data
      */
-    public static String getTotalTransactionCostColumnData(String record) {
+    public static TotalTransactionCostBean getTotalTransactionCostColumnData(String record) {
         StringBuilder builder = new StringBuilder(record);
-        String quantityLongStr = builder.substring(53, 63);
-        String quantityShortStr = builder.substring(64, 74);
-
-        long quantityLong = Long.parseLong(quantityLongStr.trim());
-        long quantityShort = Long.parseLong(quantityShortStr.trim());
-
+        String quantityLong = builder.substring(52, 62);
+        String quantityShort = builder.substring(63, 73);
         TotalTransactionCostBean totalTransactionCostBean = new TotalTransactionCostBean(quantityLong, quantityShort);
-        long totalTransaction = totalTransactionCostBean.getQuantity();
-        return String.valueOf(totalTransaction);
+        return totalTransactionCostBean;
     }
 }

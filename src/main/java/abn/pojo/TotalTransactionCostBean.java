@@ -4,28 +4,33 @@ package abn.pojo;
  * This class represents Client_Information data in output.csv
  */
 public class TotalTransactionCostBean {
-    private final long quantityLong;
-    private final long quantityShort;
+    private final String quantityLong;
+    private final String quantityShort;
 
-    public TotalTransactionCostBean(long quantityLong, long quantityShort) {
+    public TotalTransactionCostBean(String quantityLong, String quantityShort) {
         this.quantityLong = quantityLong;
         this.quantityShort = quantityShort;
     }
 
-    private long getQuantityLong() {
+    public String getQuantityLong() {
         return quantityLong;
     }
 
-    private long getQuantityShort() {
+    public String getQuantityShort() {
         return quantityShort;
     }
 
     public long getQuantity() {
-        return getQuantityLong() - getQuantityShort();
+        long quantityLongValue = Long.parseLong(getQuantityLong());
+        long quantityShortValue = Long.parseLong(getQuantityShort());
+
+        return quantityLongValue - quantityShortValue;
     }
 
     @Override
     public String toString() {
-        return String.valueOf(getQuantity());
+        return  "quantityLong=" + quantityLong +
+                ",quantityShort=" + quantityShort +
+                ",totalQuantity=" +getQuantity();
     }
 }

@@ -17,6 +17,22 @@ public class ClientInformationBean {
         this.subAccountNumber = subAccountNumber;
     }
 
+    public String getClientType() {
+        return clientType;
+    }
+
+    public String getClientNumber() {
+        return clientNumber;
+    }
+
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+
+    public String getSubAccountNumber() {
+        return subAccountNumber;
+    }
+
     @Override
     public String toString() {
         return  "clientType=" + clientType +

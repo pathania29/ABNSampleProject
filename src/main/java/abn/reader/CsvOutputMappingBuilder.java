@@ -1,6 +1,9 @@
 package abn.reader;
 
+import abn.pojo.ClientInformationBean;
 import abn.pojo.CsvOuputMappingBean;
+import abn.pojo.ProductInformationBean;
+import abn.pojo.TotalTransactionCostBean;
 import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
@@ -11,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static abn.util.CSVColumnDataExtractorUtil.*;
+import static abn.writer.CSVOutputResultGenerator.createErrorRecordsFile;
 
 /**
  * Reference Document: System A File Specification.pdf
@@ -24,36 +28,84 @@ public class CsvOutputMappingBuilder {
 
     private final List<CsvOuputMappingBean> csvOuputMappingBeanList = new ArrayList<>();
 
+    private final List<String> errorRecords = new ArrayList<>();
+
+    /**
+     * Method to read input.txt file
+     *
+     * @param stream
+     * @throws IOException
+     */
     public void readFileUsingInputStream(InputStream stream) throws IOException {
-        log.info(" Started reading Input.txt");
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(stream));
-        String record;
-        while ((record = bufferedReader.readLine()) != null) {
-            String clientInformation = getClientInformation(record);
-            String productInformation = getProductInformation(record);
-            String totaltransactionCost = getTotalTransactionCost(record);
-            CsvOuputMappingBean csvOuputMappingBean = new CsvOuputMappingBean(clientInformation, productInformation, totaltransactionCost);
-            csvOuputMappingBeanList.add(csvOuputMappingBean);
+        log.info(" Started reading Input file ...");
+        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(stream))) {
+            String record;
+            while ((record = bufferedReader.readLine()) != null) {
+                try {
+                    String clientInformation = getClientInformation(record).toString();
+                    String productInformation = getProductInformation(record).toString();
+                    String totalTransactionCost = getTotalTransactionCost(record).toString();
+                    CsvOuputMappingBean csvOuputMappingBean = new CsvOuputMappingBean(clientInformation,
+                            productInformation, totalTransactionCost);
+                    csvOuputMappingBeanList.add(csvOuputMappingBean);
+                } catch (Exception exe) {
+                    log.error(" Issue with record " + record + " with message " + exe.getMessage());
+                    errorRecords.add(record);
+                    exe.printStackTrace();
+                }
+            }
+        } catch (IOException e) {
+            throw e;
         }
-        bufferedReader.close();
-        log.info("Input.txt read.");
+
+        log.info("Finished reading input file...");
+
+        checkErrorRecords("ErrorRecords.txt");
+
     }
 
+    private void checkErrorRecords(String errorFileName) {
+        log.info(" Error records size is " + getErrorRecords().size());
+        if (!errorRecords.isEmpty()) {
+            createErrorRecordsFile(getErrorRecords(), errorFileName);
+        }
+    }
 
-
-    private String getClientInformation(String record) {
+    /**
+     * Method to get Client_Information
+     *
+     * @param record
+     * @return
+     */
+    private ClientInformationBean getClientInformation(String record) {
         return getClientInformationColumnData(record);
     }
 
-    private String getProductInformation(String record) {
+    /**
+     * Method to get Product_Information
+     *
+     * @param record
+     * @return
+     */
+    private ProductInformationBean getProductInformation(String record) {
         return getProductInformationColumnData(record);
     }
 
-    private String getTotalTransactionCost(String record) {
+    /**
+     * Method to get Total_Transaction_Amount
+     *
+     * @param record
+     * @return
+     */
+    private TotalTransactionCostBean getTotalTransactionCost(String record) {
         return getTotalTransactionCostColumnData(record);
     }
 
     public List<CsvOuputMappingBean> getMappingBeanList() {
         return csvOuputMappingBeanList;
+    }
+
+    public List<String> getErrorRecords() {
+        return errorRecords;
     }
 }
