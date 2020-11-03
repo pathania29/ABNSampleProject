@@ -14,9 +14,7 @@
  
  Users can also go through Application.log file to check logs, which is also created when this application runs.
  
- Please unzip the folder and read README.md for setting up, running and debugging the application
-
-**Pre-Requisites** 
+ **Pre-Requisites** 
 1. JDK 1.8 is installed  
 
 2. Maven is installed  
