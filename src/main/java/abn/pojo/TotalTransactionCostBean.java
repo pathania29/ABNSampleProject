@@ -29,8 +29,8 @@ public class TotalTransactionCostBean {
 
     @Override
     public String toString() {
-        return  "quantityLong=" + quantityLong +
+        return "quantityLong=" + quantityLong +
                 ",quantityShort=" + quantityShort +
-                ",totalQuantity=" +getQuantity();
+                ",totalQuantity=" + getQuantity();
     }
 }

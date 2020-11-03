@@ -4,7 +4,10 @@ import abn.pojo.ClientInformationBean;
 import abn.pojo.ProductInformationBean;
 import abn.pojo.TotalTransactionCostBean;
 
-public class CSVColumnDataExtractorUtil {
+/**
+ * Utility class to extract columns data for output.csv file
+ */
+public class CSVColumnDataWriterUtil {
 
     /**
      * Method logic taken from specification file
@@ -16,6 +19,7 @@ public class CSVColumnDataExtractorUtil {
      * ACCOUNT NUMBER     4        (including O decimals)     12-15
      * SUBACCOUNT NUMBER  4        (including O decimals)     16-19
      * record = record.replaceAll("\\s","");
+     *
      * @param record This represents single transaction record data
      */
     public static ClientInformationBean getClientInformationColumnData(String record) {
@@ -24,9 +28,8 @@ public class CSVColumnDataExtractorUtil {
         String clientNumber = builder.substring(7, 11);
         String accountNumber = builder.substring(11, 15);
         String subAccountNumber = builder.substring(15, 19);
-        ClientInformationBean clientInformation = new ClientInformationBean(clientType,
+        return new ClientInformationBean(clientType,
                 clientNumber, accountNumber, subAccountNumber);
-        return clientInformation;
     }
 
     /**
@@ -46,9 +49,8 @@ public class CSVColumnDataExtractorUtil {
         String exchangeCode = builder.substring(27, 31);
         String symbol = builder.substring(31, 37);
         String expirationDate = builder.substring(37, 45);
-        ProductInformationBean productInformationBean = new ProductInformationBean(exchangeCode,
+        return new ProductInformationBean(exchangeCode,
                 productGroupCode, symbol, expirationDate);
-        return productInformationBean;
     }
 
     /**
@@ -64,7 +66,6 @@ public class CSVColumnDataExtractorUtil {
         StringBuilder builder = new StringBuilder(record);
         String quantityLong = builder.substring(52, 62);
         String quantityShort = builder.substring(63, 73);
-        TotalTransactionCostBean totalTransactionCostBean = new TotalTransactionCostBean(quantityLong, quantityShort);
-        return totalTransactionCostBean;
+        return new TotalTransactionCostBean(quantityLong, quantityShort);
     }
 }

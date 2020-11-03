@@ -15,31 +15,31 @@ public class CSVColumnDataExtractorUtilTest {
 
     @Test
     public void getClientInformationColumnData() {
-        ClientInformationBean clientInformation = CSVColumnDataExtractorUtil.getClientInformationColumnData(testRecordData);
+        ClientInformationBean clientInformation = CSVColumnDataWriterUtil.getClientInformationColumnData(testRecordData);
         assertNotNull(clientInformation);
-        assertEquals(4,clientInformation.getClientType().length());
-        assertEquals(4,clientInformation.getClientNumber().length());
-        assertEquals(4,clientInformation.getAccountNumber().length());
-        assertEquals(4,clientInformation.getSubAccountNumber().length());
+        assertEquals(4, clientInformation.getClientType().length());
+        assertEquals(4, clientInformation.getClientNumber().length());
+        assertEquals(4, clientInformation.getAccountNumber().length());
+        assertEquals(4, clientInformation.getSubAccountNumber().length());
 
     }
 
     @Test
     public void getProductInformationColumnData() {
-        ProductInformationBean productInformationBean = CSVColumnDataExtractorUtil.getProductInformationColumnData(testRecordData);
+        ProductInformationBean productInformationBean = CSVColumnDataWriterUtil.getProductInformationColumnData(testRecordData);
         assertNotNull(productInformationBean);
-        assertEquals(2,productInformationBean.getProductGroupCode().length());
-        assertEquals(4,productInformationBean.getExchangeCode().length());
-        assertEquals(6,productInformationBean.getSymbol().length());
-        assertEquals(8,productInformationBean.getExpirationDate().length());
+        assertEquals(2, productInformationBean.getProductGroupCode().length());
+        assertEquals(4, productInformationBean.getExchangeCode().length());
+        assertEquals(6, productInformationBean.getSymbol().length());
+        assertEquals(8, productInformationBean.getExpirationDate().length());
     }
 
 
     @Test
     public void getTotalTransactionCostColumnData() {
-        TotalTransactionCostBean totalTransactionCostBean = CSVColumnDataExtractorUtil.getTotalTransactionCostColumnData(testRecordData);
+        TotalTransactionCostBean totalTransactionCostBean = CSVColumnDataWriterUtil.getTotalTransactionCostColumnData(testRecordData);
         assertNotNull(totalTransactionCostBean);
-        assertEquals(10,totalTransactionCostBean.getQuantityLong().length());
-        assertEquals(10,totalTransactionCostBean.getQuantityShort().length());
+        assertEquals(10, totalTransactionCostBean.getQuantityLong().length());
+        assertEquals(10, totalTransactionCostBean.getQuantityShort().length());
     }
 }

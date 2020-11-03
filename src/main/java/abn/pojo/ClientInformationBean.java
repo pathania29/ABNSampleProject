@@ -35,7 +35,7 @@ public class ClientInformationBean {
 
     @Override
     public String toString() {
-        return  "clientType=" + clientType +
+        return "clientType=" + clientType +
                 ",clientNumber=" + clientNumber +
                 ",accountNumber=" + accountNumber +
                 ",subAccountNumber=" + subAccountNumber;

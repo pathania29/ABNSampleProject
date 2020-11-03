@@ -2,13 +2,27 @@
 
 ## ABNSampleProject
 
- ABNSampleProject is an basic maven java project . The project reads an Input.txt file from resources folder , applies custom logic on data and generates an Output.csv
+ ABNSampleProject is a basic maven java project. 
+ 
+ This project reads an Input.txt file from a resources folder, applies custom logic on data and generates an Output.csv.
+ 
+ users can also pass input.txt file as run-time argument and in this case this application will use user supplied input data.
+ 
+ ABNSampleProject can be configured to run in a multi-threaded or single-threaded env, depending upon size of input file.
+ 
+ It also generates error records for all records which fail to be processed.
+ 
+ Users can also go through Application.log file to check logs, which is also created when this application runs.
+ 
+ Please unzip the folder and read README.md for setting up, running and debugging the application
 
 **Pre-Requisites** 
 1. JDK 1.8 is installed  
 
 2. Maven is installed  
-        
+
+Note to check Maven and Java version installed on your machine. please run below command.
+
 > C:\Code\ABNSampleProject>mvn --version
 >
 >      Apache Maven 3.6.3 (cecedd343002696d0abb50b32b541b8a6ba2883f)
@@ -81,12 +95,29 @@
 
 **How to run Project**  
 
+We can read the input.txt file using single thread or multi thread. Depending upon the size of input file being processed.
+If the file size is small then we can use Single threaded reader and for bigger size files we can use multi-threaded Reader.
+
+**Note**
+Right now only developers can choose whether to run multi-threaded readers or single-threaded and a number of threads in Thread-pool.
+The configuration is by design because multi-threading is a complex topic and 
+assumption is made that business users don't understand it.
+
 Go to targets folder or Copy the  executable jar "**ABNSampleProject-1.0.0.jar**" from **target** to any folder.
 And run below command.
+
+1. **Multi Thread Run:** Using default input.txt which is present inside jar. 
    
      **java -jar ABNSampleProject-1.0.0.jar**
+     
+2. **Single Thread Run:** custom input.txt provided by user during run-time. 
+   
+   **C:\Code\ABNSampleProject>java -jar ABNSampleProject-1.0.0.jar "Input file to be used" "Output CSV Name"**
 
-This will create Output.csv and Application.log files in same folder.
+   This will create 3 files in same folder.
+    1. output.csv: Output CSV File
+    2. Application.log: Log file for your run
+    3. ErrorRecords.txt : List of transaction which were not processed because of any issue with input.txt.
 
 >  C:\Temp> ls
 >
@@ -124,28 +155,40 @@ Go to root folder and run **mvn clean test**
 
 > `C:\Code\ABNSampleProject = mvn clean test`
 
-**Troubleshooting And Important Java classes**
+**Troubleshooting**
 
 1. Check Application.log file to see any exceptions.
-2. Open any IDE (Integrated Development Environment) and create new project. 
-3. Below steps explain how to import it to IntelliJ IDEA. Same steps can be done on Eclipse too.
-4. Go to 
-   File -> new -> Projects from existing resources
-   select pom.xml (C:\Code\ABNSampleProject\pom.xml)
-   click ok
-   IntelliJ will automatically download all dependencies and create a project for you.
-5. AbnMain.java is the main class.
-6. CsvOutputMappingBuilder.java is class which reads the input.txt file.
-7. CSVColumnDataExtractorUtil.java is the class that contains methods to create column data.
-8. CSVOutputResultGenerator.java is the class that writes/creates Output.csv
+2. Open Error Records text file to check records that were not processed.
+3. Correct the ErrorRecords.txt and run the report on these records only.
 
-**Input.txt**
-  
-  System A has produced the file Input.txt, which is a Fixed Width text file that contains the   Future Transactions done by client 1234
+   > **C:\Code\ABNSampleProject>java -jar ABNSampleProject-1.0.0.jar "%PATH%/ErrorRecords.txt" "ErrorOutput.csv"**
+
+**Steps to configure code on IDE**
+
+1. Open any IDE (Integrated Development Environment) and create new project. 
+2. Below steps explain how to import it to IntelliJ IDEA. Same steps can be    done on Eclipse too.
+3. Go to
+ 
+   File -> new -> Projects from existing resources
+   
+   select pom.xml (C:\Code\ABNSampleProject\pom.xml)
+   
+   click ok
+   
+   IntelliJ will automatically download all dependencies and create a project for you.
+   
+**Important Java classes**
+
+    1. AbnMain.java is the main class.
+    2. MultiThreadReader.java reads the input.txt file.
+    3. Task.java: Callable task to create one row of output data
+    3. SingleThreadReader.java reads the input.txt file.
+    3. CSVColumnDataWriterUtil.java contains logic for columns data.
+    4. CSVOutputResultGenerator.java writes/creates Output.csv and error rcords txt file
 
 **Output.csv**  
   
-  The CSV has the following Headers  :
+  The CSV has the following Headers :
    
  1. Client_Information      
  2. Product_Information    

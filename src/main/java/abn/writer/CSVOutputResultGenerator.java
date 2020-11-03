@@ -1,5 +1,6 @@
 package abn.writer;
 
+import abn.exceptions.AbnClientException;
 import abn.pojo.CsvOuputMappingBean;
 import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
@@ -15,7 +16,7 @@ import java.nio.file.Paths;
 import java.util.List;
 
 /**
- * This class is used to create Output.csv
+ * This class is used to create Output.csv and ErrorRecords.txt
  */
 public class CSVOutputResultGenerator {
 
@@ -29,25 +30,30 @@ public class CSVOutputResultGenerator {
      */
     public static void generateOutputCsv(String outputFileName, List<CsvOuputMappingBean> outputList) {
         try {
-            log.info("Generating... " +outputFileName);
+            log.info("Generating " + outputFileName + " with " + outputList.size() + " rows");
             Writer writer = new PrintWriter(outputFileName);
             StatefulBeanToCsvBuilder<CsvOuputMappingBean> builder = new StatefulBeanToCsvBuilder<>(writer);
             StatefulBeanToCsv<CsvOuputMappingBean> beanWriter = builder.build();
             beanWriter.write(outputList);
             writer.close();
             log.info(outputFileName + " generated !!! ");
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception exe) {
+            throw new AbnClientException(exe.getMessage(), exe);
         }
     }
 
     /**
      * This method creates the error record txt file
-     * @param errorRecords
+     *
+     * @param errorRecords List of transactions which were not processed
      */
     public static void createErrorRecordsFile(List<String> errorRecords, String errorFileName) {
 
-        log.info(" Error records file is " +errorFileName);
+        if (errorRecords.isEmpty()) {
+            return;
+        }
+
+        log.info(" Error records file is " + errorFileName);
 
         //Get the file reference
         Path path = Paths.get(errorFileName);
@@ -58,7 +64,7 @@ public class CSVOutputResultGenerator {
                 writer.write(data);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new AbnClientException(e.getMessage(), e);
         }
     }
 }
